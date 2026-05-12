@@ -1,0 +1,134 @@
+Dataset:
+https://www.kaggle.com/datasets/uciml/iris/data?select=Iris.csv
+
+
+EXP 3 HAS 2 PARTS, PART 2 IS PERFORMED BELOW. PART 1 TAKE FROM FARHAN
+
+# Step 1: Import Required Libraries
+
+import pandas as pd
+import numpy as np
+import seaborn as sns
+
+
+# Step 2: Load Iris Dataset
+
+df = sns.load_dataset('iris')
+
+df.head()
+
+
+# Step 3: Check Basic Information
+
+print("Shape of Dataset:", df.shape)
+print("\nColumn Names:")
+print(df.columns)
+
+print("\nData Types:")
+print(df.dtypes)
+
+
+# Step 4: Display Statistical Summary
+
+df.describe()
+
+# Step 5: Calculate Mean
+
+print("Mean Values:\n")
+print(df.mean(numeric_only=True))
+
+
+# Step 6: Calculate Median
+
+print("Median Values:\n")
+print(df.median(numeric_only=True))
+
+
+# Step 7: Calculate Mode
+
+print("Mode Values:\n")
+print(df.mode())
+
+
+# Step 8: Calculate Variance
+
+print("Variance:\n")
+print(df.var(numeric_only=True))
+
+
+
+# Step 9: Calculate Standard Deviation
+
+print("Standard Deviation:\n")
+print(df.std(numeric_only=True))
+
+
+# Step 10: Calculate Percentiles
+
+print("25th Percentile:\n")
+print(df.quantile(0.25, numeric_only=True))
+
+print("\n50th Percentile:\n")
+print(df.quantile(0.50, numeric_only=True))
+
+print("\n75th Percentile:\n")
+print(df.quantile(0.75, numeric_only=True))
+
+
+
+# Step 11: Species-wise Summary Statistics
+
+grouped = df.groupby('species').describe()
+
+grouped
+
+
+# Step 12: Mean of Each Species
+
+print(df.groupby('species').mean(numeric_only=True))
+
+
+
+
+Farhan :
+import pandas as pd
+import statistics as st
+import numpy as np
+
+
+df = pd.read_csv("iris.csv")
+
+df.head()
+df.tail()
+
+df.info()
+
+
+df.describe()
+
+print("Shape:", df.shape)
+print("Size:", df.size)
+print("Columns:", df.columns)
+print("Data Types:\n", df.dtypes)
+print("Dimensions:", df.ndim)
+
+
+def custom_describe(x):
+    mode_value = st.mode(x)
+    median_value = np.median(x)
+    return pd.Series(
+        [x.count(), x.mean(), x.std(), mode_value, median_value, x.min(), x.max()],
+        index=['count','mean','std','mode','median','min','max']
+    )
+
+
+summary_with_mode_median = df.groupby('Species')['SepalLengthCm'].apply(custom_describe)
+print(summary_with_mode_median)
+
+
+print(df.groupby('Species')['SepalLengthCm'].describe())
+
+print(df.groupby('Species')['SepalLengthCm'].median(numeric_only=True))
+
+df.groupby('Species')['SepalLengthCm'].quantile([0.25, 0.5, 0.75])
+

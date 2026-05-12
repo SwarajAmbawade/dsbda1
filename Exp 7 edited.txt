@@ -1,0 +1,119 @@
+Experiment 7: Text Analytics
+
+Step 1: Import Required Libraries
+import nltk
+import string
+
+from nltk.tokenize import word_tokenize
+from nltk.corpus import stopwords
+from nltk.stem import PorterStemmer, WordNetLemmatizer
+from nltk import pos_tag
+
+from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
+import pandas as pd
+
+
+
+
+Step 2: Download NLTK Resources (Run Once)
+nltk.download('punkt')
+nltk.download('punkt_tab')
+nltk.download('stopwords')
+nltk.download('averaged_perceptron_tagger')
+nltk.download('wordnet')
+nltk.download('omw-1.4')
+
+
+
+Step 3: Input Sample Documents
+
+(Using multiple documents makes IDF mathematically meaningful.)
+
+documents = [
+    "Data Science is an interdisciplinary field that uses scientific methods, processes, algorithms and systems to extract knowledge.",
+    "Machine Learning is a branch of Artificial Intelligence that allows systems to learn from data.",
+    "Text Analytics helps in processing textual data to extract useful information."
+]
+
+
+
+Step 4: Tokenization
+tokens = word_tokenize(documents[0])
+
+print("Tokens:\n", tokens)
+
+
+
+Step 5: POS Tagging
+
+(Do this BEFORE removing stopwords.)
+
+pos_tags = pos_tag(tokens)
+
+print("POS Tags:\n", pos_tags)
+
+
+
+Step 6: Stop Words Removal + Punctuation Removal
+stop_words = set(stopwords.words('english'))
+
+filtered_tokens = [
+    word.lower()
+    for word in tokens
+    if word.lower() not in stop_words and word not in string.punctuation
+]
+
+print("Filtered Tokens:\n", filtered_tokens)
+
+
+
+
+
+Step 7: Stemming
+stemmer = PorterStemmer()
+
+stemmed_words = [stemmer.stem(word) for word in filtered_tokens]
+
+print("Stemmed Words:\n", stemmed_words)
+
+
+
+
+Step 8: Lemmatization
+lemmatizer = WordNetLemmatizer()
+
+lemmatized_words = [lemmatizer.lemmatize(word) for word in filtered_tokens]
+
+print("Lemmatized Words:\n", lemmatized_words)
+
+
+
+Part 2: Document Representation
+
+Step 9: Term Frequency (TF)
+count_vectorizer = CountVectorizer()
+
+tf_matrix = count_vectorizer.fit_transform(documents)
+
+tf_df = pd.DataFrame(
+    tf_matrix.toarray(),
+    columns=count_vectorizer.get_feature_names_out()
+)
+
+print("Term Frequency Matrix:\n")
+print(tf_df)
+
+
+
+Step 10: Inverse Document Frequency (IDF / TF-IDF)
+tfidf_vectorizer = TfidfVectorizer()
+
+tfidf_matrix = tfidf_vectorizer.fit_transform(documents)
+
+tfidf_df = pd.DataFrame(
+    tfidf_matrix.toarray(),
+    columns=tfidf_vectorizer.get_feature_names_out()
+)
+
+print("TF-IDF Matrix:\n")
+print(tfidf_df)

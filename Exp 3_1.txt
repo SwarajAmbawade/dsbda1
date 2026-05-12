@@ -1,0 +1,39 @@
+import pandas as pd
+import numpy as np
+
+
+df = pd.read_csv("income.csv")
+df.head()
+
+
+df.info()
+
+
+df.describe()
+
+df.isna().sum()
+
+categorical_col = "age"
+numerical_col = "income"
+
+
+summary_stats = df.groupby(categorical_col)[numerical_col].agg(
+    mean="mean",
+    median="median",
+    min="min",
+    max="max",
+    std="std"
+)
+summary_stats
+
+
+grouped_values = df.groupby(categorical_col)[numerical_col].apply(list)
+grouped_values
+
+
+print("Summary Statistics:\n", summary_stats)
+print("\nGrouped Values:\n", grouped_values)
+
+df.groupby(categorical_col)[numerical_col].count()
+
+

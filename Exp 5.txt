@@ -1,0 +1,173 @@
+Dataset: 
+https://www.kaggle.com/datasets/rakeshrau/social-network-ads
+
+# Step 1: Import Required Libraries
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import confusion_matrix, accuracy_score
+
+
+# Step 2: Load Dataset
+
+df = pd.read_csv("Social_Network_Ads.csv")
+
+df.head()
+
+
+# Step 3: Basic Information
+
+print("Shape of Dataset:", df.shape)
+print(df.info())
+print(df.describe())
+
+
+
+# Step 4: Select Features and Target Variable
+
+X = df[['Age', 'EstimatedSalary']]
+y = df['Purchased']
+
+
+# Step 5: Split Dataset
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.25, random_state=42
+)
+
+print("Training Shape:", X_train.shape)
+print("Testing Shape:", X_test.shape)
+
+
+
+# Step 6: Feature Scaling
+
+sc = StandardScaler()
+
+X_train = sc.fit_transform(X_train)
+X_test = sc.transform(X_test)
+
+
+
+# Step 7: Create Logistic Regression Model
+
+model = LogisticRegression()
+
+model.fit(X_train, y_train)
+
+
+
+# Step 8: Predict Values
+
+y_pred = model.predict(X_test)
+
+print("Predicted Values:\n", y_pred[:10])
+
+
+
+# Step 9: Confusion Matrix
+
+cm = confusion_matrix(y_test, y_pred)
+
+print("Confusion Matrix:\n", cm)
+
+
+
+
+# Step 10: Accuracy Score
+
+accuracy = accuracy_score(y_test, y_pred)
+
+print("Accuracy of Model:", accuracy)
+
+
+
+# Step 11: Extract TP, TN, FP, FN
+
+tn, fp, fn, tp = confusion_matrix(y_test, y_pred).ravel()
+
+print("True Positive (TP):", tp)
+print("True Negative (TN):", tn)
+print("False Positive (FP):", fp)
+print("False Negative (FN):", fn)
+
+
+
+# Step 12: Calculate Error Rate
+
+error_rate = (fp + fn) / (tp + tn + fp + fn)
+
+print("Error Rate:", error_rate)# Step 13: Precision
+
+precision = tp / (tp + fp)
+
+print("Precision:", precision)
+
+
+# Step 13: Precision
+
+precision = tp / (tp + fp)
+
+print("Precision:", precision)
+
+
+# Step 14: Recall
+
+recall = tp / (tp + fn)
+
+print("Recall:", recall)
+
+
+
+from sklearn.metrics import confusion_matrix, accuracy_score, precision_score, recall_score
+
+# Prediction
+y_pred = model.predict(X_test)
+
+# Confusion Matrix
+cm = confusion_matrix(y_test, y_pred)
+
+# Extract values
+TN = cm[0][0]
+FP = cm[0][1]
+FN = cm[1][0]
+TP = cm[1][1]
+
+# Accuracy
+accuracy = accuracy_score(y_test, y_pred)
+
+# Error Rate
+error_rate = 1 - accuracy
+
+# Precision
+precision = precision_score(y_test, y_pred)
+
+# Recall
+recall = recall_score(y_test, y_pred)
+
+# Print Results
+print("Confusion Matrix:\n", cm)
+print("True Positive (TP):", TP)
+print("True Negative (TN):", TN)
+print("False Positive (FP):", FP)
+print("False Negative (FN):", FN)
+print("Accuracy:", accuracy)
+print("Error Rate:", error_rate)
+print("Precision:", precision)
+print("Recall:", recall)
+
+
+
+
+import matplotlib.pyplot as plt
+
+plt.scatter(y_test, y_pred)
+plt.xlabel("Actual Prices")
+plt.ylabel("Predicted Prices")
+plt.title("Actual vs Predicted Prices")
+plt.show()

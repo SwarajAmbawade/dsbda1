@@ -1,0 +1,96 @@
+# Step 1: Import Required Libraries
+
+import nltk
+from nltk.tokenize import word_tokenize
+from nltk.corpus import stopwords
+from nltk.stem import PorterStemmer, WordNetLemmatizer
+from nltk import pos_tag
+
+from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
+
+
+# Step 2: Download NLTK Resources (run once)
+
+nltk.download('punkt')
+nltk.download('punkt_tab')
+nltk.download('stopwords')
+nltk.download('averaged_perceptron_tagger')
+nltk.download('wordnet')
+nltk.download('averaged_perceptron_tagger_eng')
+
+
+
+# Step 3: Input Document
+
+text = "Data Science is an interdisciplinary field that uses scientific methods, processes, algorithms and systems to extract knowledge."
+
+
+
+# Step 4: Tokenization
+
+tokens = word_tokenize(text)
+
+print("Tokens:\n", tokens)
+
+
+# Step 5: POS Tagging
+
+pos_tags = pos_tag(tokens)
+
+print("POS Tags:\n", pos_tags)
+
+
+
+# Step 6: Stopwords Removal
+
+stop_words = set(stopwords.words('english'))
+
+filtered_tokens = [word for word in tokens if word.lower() not in stop_words]
+
+print("After Stopword Removal:\n", filtered_tokens)
+
+
+
+
+# Step 7: Stemming
+
+stemmer = PorterStemmer()
+
+stemmed_words = [stemmer.stem(word) for word in filtered_tokens]
+
+print("Stemmed Words:\n", stemmed_words)
+
+
+
+# Step 8: Lemmatization
+
+lemmatizer = WordNetLemmatizer()
+
+lemmatized_words = [lemmatizer.lemmatize(word) for word in filtered_tokens]
+
+print("Lemmatized Words:\n", lemmatized_words)
+
+
+
+
+# Step 9: Term Frequency (TF)
+
+documents = [text]
+
+cv = CountVectorizer()
+
+tf_matrix = cv.fit_transform(documents)
+
+print("TF Matrix:\n", tf_matrix.toarray())
+print("Feature Names:\n", cv.get_feature_names_out())
+
+
+
+# Step 10: TF-IDF Representation
+
+tfidf = TfidfVectorizer()
+
+tfidf_matrix = tfidf.fit_transform(documents)
+
+print("TF-IDF Matrix:\n", tfidf_matrix.toarray())
+print("Feature Names:\n", tfidf.get_feature_names_out())
